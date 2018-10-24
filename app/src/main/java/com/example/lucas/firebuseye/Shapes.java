@@ -10,14 +10,13 @@ public class Shapes {
     static List<String> shapePtLon = new ArrayList<>();
     static List <String>shapePtSequence = new ArrayList<>();
     static List<String> shapePtLat=new ArrayList<>();
-    static String shapeId;
+    static String shapeId = " ";
     static FirebaseDatabase database = FirebaseDatabase.getInstance();
     static DatabaseReference myRef = database.getReference("shapes");
     static int i = 0;
 
 
     public static void criarShape(String line){
-
         String[] infoRota = line.split((","));
         if(shapeId.equals(infoRota[0])){
             ++i;
@@ -28,6 +27,7 @@ public class Shapes {
             shapePtSequence.add(infoRota[3]);
         }else {
             i=0;
+            shapeId = infoRota[0];
             myRef.child(infoRota[0]).setValue(infoRota[0]);
             myRef.child(infoRota[0]).child("shapeId").setValue(infoRota[0]);
             myRef.child(infoRota[0]).child("shapePtLat").child(String.valueOf(i)).setValue(infoRota[1]);
