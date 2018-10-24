@@ -1,88 +1,40 @@
 package com.example.lucas.firebuseye;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Shapes {
-    String shapeId,shapePtLat,shapeDistTraveled;
-    List<String> shapePtLon = new ArrayList<>();
-    List <String>shapePtSequence = new ArrayList<>();
-    static List<Shapes> listaShape = new ArrayList<>();
+    static List<String> shapePtLon = new ArrayList<>();
+    static List <String>shapePtSequence = new ArrayList<>();
+    static List<String> shapePtLat=new ArrayList<>();
     static Shapes shape;
-    static String ver = " ";
+    static String shapeId;
+    static FirebaseDatabase database = FirebaseDatabase.getInstance();
+    static DatabaseReference myRef = database.getReference("shapes");
+    static int i = 0;
 
-    public String getShapeId() {
-        return shapeId;
-    }
 
-    public void setShapeId(String shapeId) {
-        this.shapeId = shapeId;
-    }
-
-    public String getShapePtLat() {
-        return shapePtLat;
-    }
-
-    public void setShapePtLat(String shapePtLat) {
-        this.shapePtLat = shapePtLat;
-    }
-
-    public List<String> getShapePtLon() {
-        return shapePtLon;
-    }
-
-    public void setShapePtLon(List<String> shapePtLon) {
-        this.shapePtLon = shapePtLon;
-    }
-
-    public List<String> getShapePtSequence() {
-        return shapePtSequence;
-    }
-
-    public void setShapePtSequence(List<String> shapePtSequence) {
-        this.shapePtSequence = shapePtSequence;
-    }
-
-    public String getShapeDistTraveled() {
-        return shapeDistTraveled;
-    }
-
-    public void setShapeDistTraveled(String shapeDistTraveled) {
-        this.shapeDistTraveled = shapeDistTraveled;
-    }
-
-    public static List<Shapes> getListaShape() {
-        return listaShape;
-    }
-
-    public static void setListaShape(List<Shapes> listaShape) {
-        Shapes.listaShape = listaShape;
-    }
-
-    public Shapes() {
-        this.shapeId = " ";
-        this.shapePtLat = " ";
-        this.shapeDistTraveled = " ";
-    }
-
-    public static List<Shapes> criarShape(String line){
+    public static void criarShape(String line){
 
         String[] infoRota = line.split((","));
-        if(ver.equals(infoRota[0])){
-            shape = listaShape.get(listaShape.size() - 1);
-            shape.shapePtLon.add(infoRota[2]);
-            shape.shapePtSequence.add(infoRota[3]);
-            listaShape.set(listaShape.size() - 1, shape);
+        if(shapeId.equals(infoRota[0])){
+            ++i;
+            myRef.child(infoRota[0]).child("shapePtLat").child(String.valueOf(i)).setValue(infoRota[1]);
+            myRef.child(infoRota[0]).child("ShapePtLon").child(String.valueOf(i)).setValue(infoRota[2]);
+            shapePtLat.add(infoRota[1]);
+            shapePtLon.add(infoRota[2]);
+            shapePtSequence.add(infoRota[3]);
         }else {
-            ver = infoRota[0];
             shape = new Shapes();
-            shape.shapeId = infoRota[0];
-            shape.shapePtLat = infoRota[1];
-            shape.shapePtLon.add(infoRota[2]);
-            shape.shapePtSequence.add(infoRota[3]);
-            shape.shapeDistTraveled= infoRota[4];
-            listaShape.add(shape);
+            myRef.child(infoRota[0]).setValue(infoRota[0]);
+            myRef.child(infoRota[0]).child("shapeId").setValue(infoRota[0]);
+            myRef.child(infoRota[0]).child("shapePtLat").child(String.valueOf(i)).setValue(infoRota[1]);
+            myRef.child(infoRota[0]).child("ShapePtLon").child(String.valueOf(i)).setValue(infoRota[2]);
+            myRef.child(infoRota[0]).child("ShapePtSequence").setValue(infoRota[3]);
+            //myRef.child("shapes").child(infoRota[0]).child("ShapeDistTraveked").setValue(infoRota[4]);
         }
-            return listaShape;
     }
 }

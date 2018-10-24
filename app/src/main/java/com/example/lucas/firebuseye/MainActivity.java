@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     List<Route> listaRota;
     List<Trips> listaTrip;
     List<Shapes> listaShape;
+    List<String> listaStopT;
     List<Stops> listaStop;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             while (line != null) {
                 // lê da segunda até a última line
                 Log.d("LINHA", line);
-                listaShape = Shapes.criarShape(line);
+                Shapes.criarShape(line);
                 line = reader.readLine();
             }
         } catch (IOException e) {
@@ -126,6 +127,29 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 //FIM STOP
+*/
+/*
+//STOPTIMES
+        try {
+            in = this.getAssets().open("stop_times.txt");
+            Log.d("YUP", "Abriu");
+        } catch (IOException e) {
+            Log.d("ERROS", "nao");
+            e.printStackTrace();
+        }
+        reader = new BufferedReader(new InputStreamReader(in));
+        try {
+            line = reader.readLine();
+            while (line != null) {
+                // lê da segunda até a última line
+                Log.d("LINHA", line);
+                listaStopT = StopTimes.criarStopTime(line);
+                line = reader.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//FIM STOPTIMES
 */
 //ENVIA PARA O BD
         DatabaseReference myRef;
